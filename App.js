@@ -1,43 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
 
 //Styles
-import { StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from "styled-components";
 
 // Components
-import Home from "./components/Home";
-import VendorList from './components/VendorList';
-import ProductList from './components/ProductList';
+import RootNavigator from './components/Navigation';
+import { Spinner } from 'native-base';
 
-export default function App() {
+export default class App extends React.Component {
+  state = {
+    loading: true
+  };
 
-  const theme = {
-    light: {
-      text: "Dark Mode",
-      mainColor: "#242424", // main font color
-      backgroundColor: "#fefafb", // main background color
-      color: "#ff85a2",
-    }
+
+  async componentDidMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+    this.setState({ loading: false });
   }
 
-  return (
-    <View style={styles.container}>
-      <ThemeProvider theme={theme.light}>
-        {/* <Home /> */}
-        {/* <VendorList /> */}
-        <ProductList />
-      </ThemeProvider>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  render() {
+    if (this.state.loading) {
+      return <Spinner color="white" />;
+    }
+    const theme = {
+      light: {
+        text: "Dark Mode",
+        mainColor: "#242424", // main font color
+        backgroundColor: "#fefafb", // main background color
+        color: "#ff85a2",
+      }
+    }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    return (
+      <ThemeProvider theme={theme.light}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </ThemeProvider>
+    );
+  }
+}

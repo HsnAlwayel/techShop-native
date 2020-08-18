@@ -3,7 +3,7 @@ import React from "react";
 // Styling
 import { HomeBackground, OverLayContainer, Title, TopStyling, BottomStyling, ButtonStyled } from "./styles";
 
-const Home = () => {
+const Home = ({ navigation }) => {
     return (
         <HomeBackground
             source={{
@@ -15,8 +15,8 @@ const Home = () => {
                 <TopStyling>
                     <Title>TechShop</Title>
                 </TopStyling>
-                <ButtonStyled onPress={() => alert("Take me to the list of Vendors")}>
-                    Click here to skip
+                <ButtonStyled onPress={() => navigation.navigate("Vendors")}>
+                    Vendors
                 </ButtonStyled>
             </OverLayContainer>
         </HomeBackground>

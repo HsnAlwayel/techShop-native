@@ -5,19 +5,20 @@ import { observer } from "mobx-react";
 import productStore from "../../stores/ProductStore"
 
 //Styles
-import { List, Content, Spinner } from "native-base";
+import { List, Content, Spinner, Title } from "native-base";
 
 //Components
 import ProductItem from "./ProductItem";
 
-const ProductList = () => {
+const ProductList = ({ navigation, route }) => {
     if (productStore.loading) return <Spinner />;
+    const { vendor } = route.params;
 
-    const productList = productStore.products.map((product) => (
-        <ProductItem product={product} key={product.id} />
-    ));
+    const productList = vendor.products.map((product) => productStore.getProductById(product.id))
+        .map((product) => <ProductItem product={product} key={product.id} />)
     return (
         <Content>
+            <Title style={{ color: "black" }}>{vendor.name}</Title>
             <List>{productList}</List>
         </Content>
     );
