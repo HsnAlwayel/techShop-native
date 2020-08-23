@@ -30,9 +30,9 @@ const CartList = ({ navigation }) => {
     return (
         <Content>
             {cartList}
-            <CheckoutButton onPress={handleCheckout}>
+            <CheckoutButton onPress={cartStore.checkoutCart}>
                 <CheckoutButtonText>{authStore.user ? "Checkout" : "Signin to Checkout "}</CheckoutButtonText>
-            </CheckoutButton>
+            </CheckoutButton >
         </Content>
     );
 }

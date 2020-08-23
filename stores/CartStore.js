@@ -1,5 +1,6 @@
 import { computed, decorate, observable } from "mobx";
 import AsyncStorage from "@react-native-community/async-storage";
+import instance from "./instance";
 
 class CartStore {
     items = [];
@@ -26,9 +27,16 @@ class CartStore {
         await AsyncStorage.setItem("myCart", JSON.stringify(this.items));
     };
 
-    checkoutCart = () => {
-        this.items = [];
-        alert("Checkiiiing ouuuuuuuut");
+    checkoutCart = async () => {
+        try {
+            const res = await instance.post("/checkout", this.items);
+            console.log("CartStore -> checkoutCart -> res", res.data);
+            this.items = [];
+            await AsyncStorage.removeItem("myCart");
+            alert("Checkiiiiing ouuuuuuut");
+        } catch (error) {
+            console.log("CartStore -> checkoutCart -> error", error);
+        }
     };
 
     get totalQuantity() {
@@ -44,5 +52,6 @@ decorate(CartStore, {
 });
 
 const cartStore = new CartStore();
-cartStore.fetchCart();
+// cartStore.fetchCart();
+
 export default cartStore;
